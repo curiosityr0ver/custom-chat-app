@@ -2,6 +2,9 @@ const express = require("express");
 const { chats } = require("./data/data");
 const connectDB = require("./config/db");
 const userRouter = require("./routes/userRoute");
+const chatRouter = require("./routes/chatRoute");
+const messageRouter = require("./routes/messageRoute");
+
 const colors = require("colors");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 require("dotenv").config();
@@ -11,18 +14,10 @@ connectDB();
 const app = express();
 app.use(express.json());
 
-
-app.get('/api/chat', (req, res) => {
-    res.send(chats);
-});
-
-
-app.get('api/chat/:id', (req, res) => {
-    const singleChat = chats.find(c => c._id == req.params.id);
-    res.send(singleChat);
-});
-
 app.use('/api/user', userRouter);
+app.use('/api/chat', chatRouter);
+app.use("/api/message", messageRouter);
+
 app.use(notFound);
 app.use(errorHandler);
 
