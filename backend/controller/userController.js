@@ -1,6 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
-const generateToken = require("../config/generateToken");
+const { generateToken, decodeToken } = require("../config/handleToken");
 
 //@description     Get or Search all users
 //@route           GET /api/user?search=
@@ -41,13 +41,15 @@ const registerUser = asyncHandler(async (req, res) => {
     });
 
     if (user) {
+        // const token = ;
+        // console.log(token, decodeToken(token));
         res.status(201).json({
             _id: user._id,
             name: user.name,
             email: user.email,
             isAdmin: user.isAdmin,
             pic: user.pic,
-            token: generateToken(user._id),
+            token: generateToken(user._id, user.name),
         });
     } else {
         res.status(400);
@@ -70,7 +72,7 @@ const authUser = asyncHandler(async (req, res) => {
             email: user.email,
             isAdmin: user.isAdmin,
             pic: user.pic,
-            token: generateToken(user._id),
+            token: generateToken(user._id, user.name),
         });
     } else {
         res.status(401);
