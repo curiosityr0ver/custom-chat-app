@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon backend/server.js"
+    "start": "node backend/server.js",
+    "server" : "nodemon backend/server.js",
+    "build" : "npm install --legacy-peer-deps && npm install --prefix frontend && npm run build --prefix frontend --legacy-peer-deps"
   },
   "author": "Curiosity Rover",
   "license": "ISC",

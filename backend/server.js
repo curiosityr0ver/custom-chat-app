@@ -14,23 +14,31 @@ connectDB();
 const app = express();
 app.use(express.json());
 
+
+
 app.use('/api/user', userRouter);
 app.use('/api/chat', chatRouter);
 app.use("/api/message", messageRouter);
 
-app.use(notFound);
-app.use(errorHandler);
-
 // Deployement
 const __dirname1 = path.resolve();
+
 if (process.env.NODE_ENV == 'production') {
     app.use(express.static(path.join(__dirname1, '/frontend/build')));
+    app.get("*", (req, res) => {
+        res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"));
+    });
 
 } else {
     app.get('/', (req, res) => {
         res.send("Server is broadcasting APIs");
     });
 }
+
+
+app.use(notFound);
+app.use(errorHandler);
+
 
 
 const PORT = process.env.PORT || 5000;
