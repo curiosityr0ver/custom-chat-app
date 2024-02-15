@@ -5,7 +5,9 @@ const userRouter = require("./routes/userRoute");
 const chatRouter = require("./routes/chatRoute");
 const messageRouter = require("./routes/messageRoute");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
+const path = require("path");
 const colors = require("colors");
+
 
 console.clear();
 connectDB();
@@ -18,6 +20,18 @@ app.use("/api/message", messageRouter);
 
 app.use(notFound);
 app.use(errorHandler);
+
+// Deployement
+const __dirname1 = path.resolve();
+if (process.env.NODE_ENV == 'production') {
+    app.use(express.static(path.join(__dirname1, '/frontend/build')));
+
+} else {
+    app.get('/', (req, res) => {
+        res.send("Server is broadcasting APIs");
+    });
+}
+
 
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, console.log(`Server started on port ${PORT}`.yellow.bold));
