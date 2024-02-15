@@ -1,14 +1,14 @@
-const mongoose = require("mongoose");
+const express = require("express");
+const {
+    allMessages,
+    sendMessage,
+} = require("../controller/messageController");
+const { protect } = require("../middleware/authMiddleware");
 
-const messageSchema = mongoose.Schema(
-    {
-        sender: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-        content: { type: String, trim: true },
-        chat: { type: mongoose.Schema.Types.ObjectId, ref: "Chat" },
-        readBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    },
-    { timestamps: true }
-);
+const router = express.Router();
 
-const Message = mongoose.model("Message", messageSchema);
-module.exports = Message;
+router.route("/").get(protect, (req, res) => { res.send("Testing"); });
+router.route("/:chatId").get(protect, allMessages);
+router.route("/").post(protect, sendMessage);
+
+module.exports = router;
