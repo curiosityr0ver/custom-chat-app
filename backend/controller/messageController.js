@@ -29,7 +29,6 @@ const sendMessage = asyncHandler(async (req, res) => {
         console.log("Invalid data passed into request");
         return res.sendStatus(400);
     }
-    console.log("here");
     var newMessage = {
         sender: req.user._id,
         content: content,
@@ -50,7 +49,6 @@ const sendMessage = asyncHandler(async (req, res) => {
 
         res.json(message);
     } catch (error) {
-        console.log(error);
         res.status(400);
         throw new Error(error.message);
     }
